@@ -3,12 +3,17 @@
 # extract-sysroot.sh — pull a usable sysroot for the LoongArch cross-toolchain
 # from a running Loongnix 20 machine (over SSH) or from a local rootfs tree.
 #
-# Why this script:
+# Reference source: 龙芯 2K3000 EV 开发板, Loongnix 20 (DaoXiangHu).
+# Anything else running Loongnix 20 works too (3A5000 / 3C5000 / ...).
+#
+# Why this script (and why no sysroot is shipped with the toolchain):
 #   The toolchain itself is redistributable, but Loongnix 20's library tree
 #   contains Loongson-proprietary GPU drivers (libEGL_loonggpu, libGLX_loonggpu)
 #   and a closed-source crypto library (libloongson_crypto). We can't ship
 #   those in a public GitHub repo — but you can lawfully use them on your own
 #   Loongnix system. So we extract on demand from a source you control.
+#
+# Full guide with the apt-install prerequisites: see SYSROOT.md at repo root.
 #
 # Usage:
 #   ./extract-sysroot.sh --from-ssh root@<loongnix-host> [--out <sysroot-dir>]

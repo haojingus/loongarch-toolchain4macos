@@ -16,7 +16,7 @@
 | GCC | 14.2.0（C / C++ 全套，含 libstdc++ / libgcc / libgomp / libatomic / libitm，**不含 libsanitizer**） |
 | Glibc | 2.28（来自目标 sysroot，未自编） |
 | Linux kernel headers | 4.19.190.8.26-lnd.11 |
-| Sysroot 来源 | Loongnix 20，**用户自行提取**（见 `scripts/extract-sysroot.sh`） |
+| Sysroot 来源 | Loongnix 20（参考机：**龙芯 2K3000 EV 开发板**），**用户自行提取**（见 [SYSROOT.md](SYSROOT.md)） |
 
 兼容验证（实机 Loongnix 20 上跑过）：C / C++17 / 异常 / `thread_local` / `dlopen` + 跨 .so 抛异常 / `std::thread` / `std::atomic` / chrono / 浮点 全 PASS。
 
@@ -34,17 +34,13 @@
 
 ## Sysroot 自助提取
 
-`scripts/extract-sysroot.sh` 从一台可访问的 Loongnix 20 机器（或它的根文件系统 tarball）提取必要的库 + 头文件，修绝对软链 + linker script，去 APFS 大小写碰撞。
+工具链本身就是工具集（gcc / ld / ...），**接 `--sysroot=` 参数指定 sysroot 路径**。本仓库的参考 sysroot 是反向从**龙芯 2K3000 EV 开发板**（Loongnix 20，DaoXiangHu）上拉的——你手头有任何 Loongnix 20 机器都可以这么提：
 
 ```bash
-# 远端提取
-./scripts/extract-sysroot.sh --from-ssh root@<loongnix-host> --out /opt/loongarch-toolchain/sysroot
-
-# 或本地 rootfs 目录提取
-./scripts/extract-sysroot.sh --from-rootfs /path/to/loongnix-rootfs --out /opt/loongarch-toolchain/sysroot
+./scripts/extract-sysroot.sh --from-ssh root@<your-loongnix-host> --out /opt/loongarch-toolchain/sysroot
 ```
 
-详见脚本头部注释。
+完整攻略见 **[SYSROOT.md](SYSROOT.md)**——含步骤 1（在目标上 apt install 哪些 dev 包）/ 步骤 2（跑脚本）/ 步骤 3（验证）/ 用 `--sysroot=` 同时维护多目标 / 老世界 vs 新世界注意点。
 
 ## 快速开始
 
