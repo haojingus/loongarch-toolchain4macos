@@ -1,0 +1,35 @@
+Force the LoongArch glibc dynamic linker path to the "old world" location
+used by Loongnix 20 (DaoXiangHu) and other pre-upstream LoongArch distros.
+
+Upstream GCC emits "/lib64/ld-linux-loongarch-lp64d.so.1" (or similar,
+parameterised by ABI_GRLEN_SPEC / ABI_SPEC). Loongnix 20 binaries hard-coded
+the legacy path "/lib64/ld.so.1" — leftover from the pre-upstream toolchain
+that Loongson shipped before the kernel + glibc merge.
+
+Without this patch, binaries produced by an upstream-style GCC 14 fail at
+load time on Loongnix 20 with "No such file or directory" (the kernel
+can't find the requested interpreter), even though the binary is on disk.
+
+This patch is intentionally minimal — it only changes the glibc dynamic
+linker macro; everything else (multilib spec, ld.so search dirs in glibc
+itself) is fine because glibc 2.28 on the target is happy to be loaded as
+/lib64/ld.so.1.
+
+After applying this patch, rebuild GCC; verify with:
+  $ loongarch64-linux-gnu-gcc -O2 hello.c -o hello
+  $ readelf -l hello | grep INTERP
+  [Requesting program interpreter: /lib64/ld.so.1]
+
+Applies cleanly to GCC 14.2.0 release tarball.
+
+--- a/gcc/config/loongarch/gnu-user.h
++++ b/gcc/config/loongarch/gnu-user.h
+@@ -22,7 +22,7 @@ along with GCC; see the file COPYING3.  If not see
+
+ #undef GLIBC_DYNAMIC_LINKER
+ #define GLIBC_DYNAMIC_LINKER \
+-  "/lib" ABI_GRLEN_SPEC "/ld-linux-loongarch-" ABI_SPEC ".so.1"
++  "/lib64/ld.so.1"
+
+ #undef MUSL_DYNAMIC_LINKER
+ #define MUSL_DYNAMIC_LINKER \

@@ -1,0 +1,45 @@
+# Build output
+build/
+*.o
+*.a
+*.so
+*.so.*
+*.dylib
+
+# Compiled examples (binaries are arch-specific, not for repo)
+examples/hello
+examples/hello++
+examples/sysinfo
+
+# Source tarballs that build scripts may fetch
+sources/
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
+
+# The pkg itself — published via GitHub Releases, not committed
+*.pkg
+
+# Sysroot — must NEVER be committed (contains Loongson proprietary blobs
+# and we don't have redistribution rights anyway)
+sysroot/
+loongnix-rootfs/
+
+# Installed toolchain (out-of-tree)
+toolchain/
+/opt/
+
+# macOS
+.DS_Store
+._*
+
+# Editor
+*.swp
+*.swo
+.vscode/
+.idea/
+*.iml
+
+# Logs
+*.log
