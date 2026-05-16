@@ -171,6 +171,8 @@ loongarch64-linux-gnu-strip dist/app
 - 本仓库的 GCC patch、构建脚本、文档：**GPL-3.0+**（见 [LICENSE](LICENSE)）
 - Sysroot：来自 Loongnix 20，**本仓库不分发**；各组件遵循其原 License（glibc=LGPL-2.1+，linux headers=GPL-2 with syscall exception，等）
 
-## 贡献 / Issues
+## 贡献 / Issues / 联系
 
 欢迎在 GitHub 提 issue / PR。
+
+遇到问题也可以加微信沟通：**`haojing0036`**（加好友请备注「loongarch-toolchain」方便我通过）。
